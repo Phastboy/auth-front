@@ -23,11 +23,9 @@ interface HomeData {
 }
 
 export default async function Home() {
-  // Fetch home data
   const response = await getHomeData();
   console.log(response);
 
-  // Destructure data
   const {
     message,
     title,

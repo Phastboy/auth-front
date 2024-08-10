@@ -1,6 +1,7 @@
 "use server";
 
-const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://myapp.local";
+import { API_URL } from "@/constants/api";
+import { setToken } from "../cookies";
 
 export default async function login({
   email,
@@ -10,12 +11,13 @@ export default async function login({
   password: string;
 }) {
   try {
-    const response = await fetch(`${apiURL}/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -24,10 +26,28 @@ export default async function login({
       throw new Error(errorDetails.message || "Failed to login");
     }
 
+    const cookieHeader = response.headers.get("set-cookie");
+
+    if (cookieHeader) {
+      const cookiesArray = cookieHeader.split(", ");
+      cookiesArray.forEach((cookieString) => {
+        const [cookieNameValue, ...cookieAttributes] = cookieString.split("; ");
+        const [name, value] = cookieNameValue.split("=");
+
+        if (name && value) {
+          setToken(name, value);
+        }
+      });
+    }
+
     const data = await response.json();
+    console.log("Login data:", data);
     return data;
   } catch (error: any) {
     console.error("Login error:", error);
-    throw new Error(error.message || "An error occurred during login");
+    // No need to throw again if error was due to redirection
+    if (error.message !== "NEXT_REDIRECT") {
+      throw new Error(error.message || "An error occurred during login");
+    }
   }
 }

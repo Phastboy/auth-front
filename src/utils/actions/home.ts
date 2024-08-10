@@ -1,6 +1,6 @@
 "use server";
 
-const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://myapp.local";
+const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://myapp.local/api";
 
 export const getHomeData = async () => {
   try {
@@ -12,6 +12,7 @@ export const getHomeData = async () => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    console.error("Fetch failed:", error);
+    throw new Error(`Fetch failed: ${error.message}`);
   }
 };
