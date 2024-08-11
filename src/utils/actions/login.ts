@@ -46,7 +46,6 @@ export default async function login({
     return data;
   } catch (error: any) {
     console.error("Login error:", error);
-    // No need to throw again if error was due to redirection
     if (error.message !== "NEXT_REDIRECT") {
       throw new Error(error.message || "An error occurred during login");
     }

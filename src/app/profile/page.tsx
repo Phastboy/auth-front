@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { fetchWithAuth } from "@/utils/actions/profile";
+import { fetchWithAuth } from "@/utils/actions/get";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>(null);

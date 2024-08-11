@@ -1,5 +1,5 @@
 import Users from "@/components/users";
-import { getAllUser } from "@/utils/actions/users";
+import { getAllUser } from "@/utils/actions/get";
 
 export default async function Page() {
   const users = await getAllUser();
