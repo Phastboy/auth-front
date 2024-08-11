@@ -19,5 +19,7 @@ export async function fetchWithAuth() {
     throw new Error(errorDetails.message || "Request failed");
   }
 
-  return response.json();
+  const userData = await response.json();
+  console.log({ userData });
+  return userData;
 }

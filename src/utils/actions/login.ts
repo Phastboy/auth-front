@@ -35,6 +35,7 @@ export default async function login({
         const [name, value] = cookieNameValue.split("=");
 
         if (name && value) {
+          console.log("Setting cookie:", name, value);
           setToken(name, value);
         }
       });
